@@ -1,0 +1,98 @@
+<div class="container mt-8" role="complementary" aria-label="Financial Planning and Optimization">
+    <h2 class="text-2xl font-extrabold text-green-800 mb-6 text-center select-none">💰 Financial Planning & Optimization</h2>
+    
+    <!-- Financial Planning Sections -->
+    <div class="financial-sections mt-8">
+      <!-- Cost Optimization Section -->
+      <div class="section-card mb-6">
+        <h2 class="text-2xl font-bold text-green-800 mb-4">Cost Optimization</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="current-investment" class="block font-semibold text-green-700 mb-1">Current Investment (₹)</label>
+            <input type="number" id="current-investment" placeholder="Enter current investment" min="0" step="1000" />
+          </div>
+          <div>
+            <label for="expected-yield" class="block font-semibold text-green-700 mb-1">Expected Yield (kg)</label>
+            <input type="number" id="expected-yield" placeholder="Enter expected yield" min="0" step="100" />
+          </div>
+        </div>
+        <button id="optimize-btn" class="mt-4">Optimize Costs</button>
+        <div id="optimization-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden"></div>
+      </div>
+
+      <!-- Investment Planning Section -->
+      <div class="section-card mb-6">
+        <h2 class="text-2xl font-bold text-green-800 mb-4">Investment Planning</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="available-capital" class="block font-semibold text-green-700 mb-1">Available Capital (₹)</label>
+            <input type="number" id="available-capital" placeholder="Enter available capital" min="0" step="1000" />
+          </div>
+          <div>
+            <label for="investment-period" class="block font-semibold text-green-700 mb-1">Investment Period (months)</label>
+            <input type="number" id="investment-period" placeholder="Enter investment period" min="1" max="60" />
+          </div>
+        </div>
+        <button id="plan-btn" class="mt-4">Generate Investment Plan</button>
+        <div id="plan-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden"></div>
+      </div>
+
+      <!-- Crop Suitability Analysis -->
+      <div class="section-card mb-6">
+        <h2 class="text-2xl font-bold text-green-800 mb-4">Crop Suitability Analysis</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label for="soil-type" class="block font-semibold text-green-700 mb-1">Soil Type</label>
+            <select id="soil-type" class="w-full">
+              <option value="">Select soil type</option>
+              <option value="clay">Clay</option>
+              <option value="sandy">Sandy</option>
+              <option value="loamy">Loamy</option>
+              <option value="black">Black</option>
+              <option value="red">Red</option>
+            </select>
+          </div>
+          <div>
+            <label for="climate" class="block font-semibold text-green-700 mb-1">Climate</label>
+            <select id="climate" class="w-full">
+              <option value="">Select climate</option>
+              <option value="tropical">Tropical</option>
+              <option value="subtropical">Subtropical</option>
+              <option value="temperate">Temperate</option>
+              <option value="arid">Arid</option>
+            </select>
+          </div>
+          <div>
+            <label for="water-availability" class="block font-semibold text-green-700 mb-1">Water Availability</label>
+            <select id="water-availability" class="w-full">
+              <option value="">Select water availability</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+        </div>
+        <button id="analyze-btn" class="mt-4">Analyze Suitability</button>
+        <div id="suitability-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden"></div>
+      </div>
+
+      <!-- Financial Tracking -->
+      <div class="section-card">
+        <h2 class="text-2xl font-bold text-green-800 mb-4">Financial Tracking</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="start-date" class="block font-semibold text-green-700 mb-1">Start Date</label>
+            <input type="date" id="start-date" class="w-full" />
+          </div>
+          <div>
+            <label for="end-date" class="block font-semibold text-green-700 mb-1">End Date</label>
+            <input type="date" id="end-date" class="w-full" />
+          </div>
+        </div>
+        <button id="track-btn" class="mt-4">Track Finances</button>
+        <div id="tracking-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden">
+          <canvas id="financial-chart" width="400" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>

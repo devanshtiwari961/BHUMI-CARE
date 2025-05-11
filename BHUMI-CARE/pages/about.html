@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - BHUMI-CARE</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: rgba(27, 94, 32, 0.95);
+      backdrop-filter: blur(10px);
+      color: white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, 
+        #2E7D32, 
+        #43A047, 
+        #66BB6A, 
+        #81C784, 
+        #A5D6A7, 
+        #C8E6C9
+      );
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    .brand-name {
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .menu-items {
+      display: flex;
+      gap: 1rem;
+      margin-left: 2rem;
+    }
+
+    .menu-item {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .menu-item:nth-child(1) {
+      background: rgba(255, 87, 34, 0.3);
+      border: 1px solid rgba(255, 87, 34, 0.5);
+    }
+    .menu-item:nth-child(1):hover {
+      background: rgba(255, 87, 34, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    }
+
+    .menu-item:nth-child(2) {
+      background: rgba(33, 150, 243, 0.3);
+      border: 1px solid rgba(33, 150, 243, 0.5);
+    }
+    .menu-item:nth-child(2):hover {
+      background: rgba(33, 150, 243, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .menu-item:nth-child(3) {
+      background: rgba(156, 39, 176, 0.3);
+      border: 1px solid rgba(156, 39, 176, 0.5);
+    }
+    .menu-item:nth-child(3):hover {
+      background: rgba(156, 39, 176, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+    }
+
+    .menu-item:nth-child(4) {
+      background: rgba(76, 175, 80, 0.3);
+      border: 1px solid rgba(76, 175, 80, 0.5);
+    }
+    .menu-item:nth-child(4):hover {
+      background: rgba(76, 175, 80, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .about-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .about-title {
+      text-align: center;
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+
+    .team-member {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      color: white;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .team-member:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .member-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .member-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .member-email {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .member-email:hover {
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(27, 94, 32, 0.95);
+      backdrop-filter: blur(10px);
+      color: white;
+      margin-top: 2rem;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .menu-items {
+        margin: 1rem 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+
+      .about-container {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-container">
+    <div class="top-bar"></div>
+    <div class="logo-container">
+      <img src="https://img.icons8.com/color/96/000000/wheat.png" alt="BHUMI-CARE Logo" class="logo">
+      <div class="brand-name">BHUMI-CARE</div>
+    </div>
+    <div class="menu-items">
+      <a href="index.html" class="menu-item">🏠 Home</a>
+      <a href="about.html" class="menu-item">ℹ️ About</a>
+      <a href="#" class="menu-item">📞 Contact</a>
+      <a href="#" class="menu-item">💬 Support</a>
+    </div>
+  </div>
+
+  <div class="about-container">
+    <h1 class="about-title">Our Team</h1>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Pratyaksh</h2>
+        <a href="mailto:pratyakshtyagi2005@gmail.com" class="member-email">pratyakshtyagi2005@gmail.com</a>
+      </div>
+
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Devansh</h2>
+        <a href="mailto:devanshtiwari26032007@gmail.com" class="member-email">devanshtiwari26032007@gmail.com</a>
+      </div>
+
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Prince</h2>
+        <a href="mailto:i.princesingh.19@gmail.com" class="member-email">i.princesingh.19@gmail.com</a>
+      </div>
+
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Aridaman</h2>
+        <a href="mailto:aridaman6668@gmail.com" class="member-email">aridaman6668@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 BHUMI-CARE. All rights reserved.</p>
+  </footer>
+</body>
+</html>

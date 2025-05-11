@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Guide to Crop Diseases - BHUMI-CARE</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="disease.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Comprehensive Guide to Crop Diseases</h1>
+        <p>Symptoms, Causes, and Remedies for 25 Common Crop Diseases</p>
+    </header>
+
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="disease.html" class="active">Disease List</a>
+        <a href="#prevention">Prevention Tips</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+
+    <div class="search-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search diseases by name or symptom...">
+            <button id="searchButton"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="filters">
+            <select id="cropType">
+                <option value="">All Crops</option>
+                <option value="vegetables">Vegetables</option>
+                <option value="fruits">Fruits</option>
+                <option value="cereals">Cereals</option>
+                <option value="legumes">Legumes</option>
+            </select>
+            <select id="diseaseType">
+                <option value="">All Types</option>
+                <option value="fungal">Fungal</option>
+                <option value="bacterial">Bacterial</option>
+                <option value="viral">Viral</option>
+            </select>
+            <select id="severity">
+                <option value="">All Severities</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+    </div>
+
+    <main class="disease-grid">
+        <!-- Disease cards will be dynamically populated by JavaScript -->
+    </main>
+
+    <div id="diseaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="diseaseDetails"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="#prevention">Prevention Tips</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Subscribe to Newsletter</h3>
+                <form id="newsletterForm">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Information</h3>
+                <p>Email: support@bhumicare.com</p>
+                <p>Phone: +91 1234567890</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BHUMI-CARE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="disease.js"></script>
+</body>
+</html>

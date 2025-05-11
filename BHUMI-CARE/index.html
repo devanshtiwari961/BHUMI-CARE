@@ -1,0 +1,771 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BHUMI-CARE Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: rgba(27, 94, 32, 0.95);
+      backdrop-filter: blur(10px);
+      color: white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, 
+        #8B4513, 
+        #A0522D, 
+        #6B8E23, 
+        #556B2F, 
+        #8B4513, 
+        #A0522D
+      );
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    .brand-name {
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .slogan {
+      margin-left: auto;
+      font-size: 1.8rem;
+      font-style: italic;
+      color: #e8f5e9;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      position: relative;
+      padding-right: 2rem;
+    }
+
+    .slogan::after {
+      content: '🌾';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+    }
+
+    .menu-items {
+      display: flex;
+      gap: 1rem;
+      margin-left: 2rem;
+    }
+
+    .menu-item {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Individual menu item colors */
+    .menu-item:nth-child(1) { /* Home */
+      background: rgba(255, 87, 34, 0.3);
+      border: 1px solid rgba(255, 87, 34, 0.5);
+    }
+    .menu-item:nth-child(1):hover {
+      background: rgba(255, 87, 34, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    }
+
+    .menu-item:nth-child(2) { /* About */
+      background: rgba(33, 150, 243, 0.3);
+      border: 1px solid rgba(33, 150, 243, 0.5);
+    }
+    .menu-item:nth-child(2):hover {
+      background: rgba(33, 150, 243, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .menu-item:nth-child(3) { /* Contact */
+      background: rgba(156, 39, 176, 0.3);
+      border: 1px solid rgba(156, 39, 176, 0.5);
+    }
+    .menu-item:nth-child(3):hover {
+      background: rgba(156, 39, 176, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+    }
+
+    .menu-item:nth-child(4) { /* Support */
+      background: rgba(76, 175, 80, 0.3);
+      border: 1px solid rgba(76, 175, 80, 0.5);
+    }
+    .menu-item:nth-child(4):hover {
+      background: rgba(76, 175, 80, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    /* Add icons to menu items */
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+      transition: all 0.3s ease;
+    }
+
+    .menu-item:hover::before {
+      background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2.5rem;
+      padding: 3rem;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      color: white;
+      border-radius: 25px;
+      padding: 2.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+      transition: all 0.4s ease;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    /* Transparent blocks with vibrant hover colors */
+    .card:nth-child(1) { 
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+    .card:nth-child(1):hover { 
+      background: rgba(255, 87, 34, 0.8);
+      border-color: rgba(255, 87, 34, 0.9);
+    }
+
+    .card:nth-child(2) { 
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+    .card:nth-child(2):hover { 
+      background: rgba(76, 175, 80, 0.8);
+      border-color: rgba(76, 175, 80, 0.9);
+    }
+
+    .card:nth-child(3) { 
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+    .card:nth-child(3):hover { 
+      background: rgba(156, 39, 176, 0.8);
+      border-color: rgba(156, 39, 176, 0.9);
+    }
+
+    .card:nth-child(4) { 
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+    .card:nth-child(4):hover { 
+      background: rgba(33, 150, 243, 0.8);
+      border-color: rgba(33, 150, 243, 0.9);
+    }
+
+    .card:nth-child(5) { 
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+    .card:nth-child(5):hover { 
+      background: rgba(255, 193, 7, 0.8);
+      border-color: rgba(255, 193, 7, 0.9);
+    }
+
+    .card:nth-child(6) { 
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+    .card:nth-child(6):hover { 
+      background: rgba(0, 150, 136, 0.8);
+      border-color: rgba(0, 150, 136, 0.9);
+    }
+
+    .card-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.4s ease;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover .card-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .card-text {
+      position: relative;
+      z-index: 1;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(27, 94, 32, 0.95);
+      backdrop-filter: blur(10px);
+      color: white;
+      margin-top: 2rem;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .menu-items {
+        margin: 1rem 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .slogan {
+        margin: 1rem 0 0 0;
+        font-size: 1.4rem;
+      }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 1.5rem;
+      }
+
+      .card {
+        padding: 2rem;
+        font-size: 1.5rem;
+      }
+
+      .card-icon {
+        font-size: 3rem;
+      }
+
+      .menu-item {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Add new styles for the about section */
+    .about-section {
+      display: none; /* Hidden by default */
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .about-section.active {
+      display: block;
+    }
+
+    .dashboard.active {
+      display: grid;
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .about-title {
+      text-align: center;
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+
+    .team-member {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      color: white;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .team-member:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .member-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .member-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .member-email {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      word-break: break-all;
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .member-email:hover {
+      color: white;
+    }
+
+    /* Financial Planning Styles */
+    .financial-dashboard {
+      margin-top: 2rem;
+    }
+
+    .optimization-card,
+    .investment-card,
+    .crop-suitability,
+    .financial-tracking {
+      transition: transform 0.3s ease;
+    }
+
+    .optimization-card:hover,
+    .investment-card:hover,
+    .crop-suitability:hover,
+    .financial-tracking:hover {
+      transform: translateY(-5px);
+    }
+
+    .summary-card {
+      transition: all 0.3s ease;
+    }
+
+    .summary-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .crop-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .crop-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .financial-dashboard,
+      .tracking-summary {
+        grid-template-columns: 1fr;
+      }
+      
+      .suitability-filters .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .financial-sections {
+      width: 100%;
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-card h2 {
+      border-bottom: 2px solid #10B981;
+      padding-bottom: 0.5rem;
+    }
+
+    #financial-chart {
+      width: 100%;
+      height: 300px;
+      margin-top: 1rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="header-container">
+    <div class="top-bar"></div>
+    <div class="logo-container">
+      <img src="https://img.icons8.com/color/96/000000/wheat.png" alt="BHUMI-CARE Logo" class="logo">
+      <div class="brand-name">BHUMI-CARE</div>
+    </div>
+    <div class="menu-items">
+      <a href="#" class="menu-item" onclick="showSection('dashboard')">🏠 Home</a>
+      <a href="#" class="menu-item" onclick="showSection('about')">ℹ️ About</a>
+      <a href="#" class="menu-item">💬 Support:bhumicareteam@gmail.com</a>
+    </div>
+    <div class="slogan">Empowering Rural India!</div>
+  </div>
+
+  <!-- Dashboard Section -->
+  <div class="dashboard active">
+    <a href="pages/community.html" class="card">
+      <div class="card-icon">👥</div>
+      <div class="card-text">Community Interaction</div>
+    </a>
+    <a href="pages/budget.html" class="card">
+      <div class="card-icon">💰</div>
+      <div class="card-text">Financial Planning</div>
+    </a>
+    <a href="pages/disease.html" class="card">
+      <div class="card-icon">🌱</div>
+      <div class="card-text">Crop Disease</div>
+    </a>
+    <a href="pages/news.html" class="card">
+      <div class="card-icon">📰</div>
+      <div class="card-text">Latest Farming News</div>
+    </a>
+    <a href="pages/weather.html" class="card">
+      <div class="card-icon">🌤️</div>
+      <div class="card-text">Air & Moisture Weather</div>
+    </a>
+    <a href="pages/techniques.html" class="card">
+      <div class="card-icon">🚜</div>
+      <div class="card-text">Farming Methods</div>
+    </a>
+  </div>
+
+  <!-- About Section -->
+  <div class="about-section">
+    <h1 class="about-title">Our Team</h1>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Devansh</h2>
+        <a href="mailto:devanshtiwari26032007@gmail.com" class="member-email">devanshtiwari26032007@gmail.com</a>
+      </div>
+      
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Pratyaksh</h2>
+        <a href="mailto:pratyakshtyagi2005@gmail.com" class="member-email">pratyakshtyagi2005@gmail.com</a>
+      </div>
+
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Prince</h2>
+        <a href="mailto:i.princesingh.19@gmail.com" class="member-email">i.princesingh.19@gmail.com</a>
+      </div>
+
+      <div class="team-member">
+        <div class="member-image">👨‍💻</div>
+        <h2 class="member-name">Aridaman</h2>
+        <a href="mailto:aridaman6668@gmail.com" class="member-email">aridaman6668@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add this after the existing container div -->
+  
+
+  <footer>
+    <p>&copy; 2025 BHUMI-CARE. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function showSection(sectionName) {
+      // Hide all sections
+      document.querySelector('.dashboard').classList.remove('active');
+      document.querySelector('.about-section').classList.remove('active');
+
+      // Show selected section
+      if (sectionName === 'dashboard') {
+        document.querySelector('.dashboard').classList.add('active');
+      } else if (sectionName === 'about') {
+        document.querySelector('.about-section').classList.add('active');
+      }
+    }
+
+    // Add these new data structures at the beginning of your script
+    const cropSuitabilityData = {
+        'Maharashtra': {
+            climate: 'tropical',
+            soil: ['black', 'alluvial'],
+            water: 'medium',
+            suitableCrops: ['cotton', 'sugarcane', 'soybean', 'wheat']
+        },
+        'Karnataka': {
+            climate: 'tropical',
+            soil: ['red', 'black'],
+            water: 'medium',
+            suitableCrops: ['coffee', 'tea', 'sugarcane', 'cotton']
+        },
+        'Punjab': {
+            climate: 'subtropical',
+            soil: ['alluvial'],
+            water: 'high',
+            suitableCrops: ['wheat', 'rice', 'cotton', 'sugarcane']
+        },
+        // Add more states as needed
+    };
+
+    const financialData = {
+        investments: [],
+        revenues: [],
+        expenses: []
+    };
+
+    // Add these new functions
+    function initializeFinancialTracking() {
+        const startDate = document.getElementById('start-date');
+        const endDate = document.getElementById('end-date');
+        
+        // Set default dates (last 6 months)
+        const today = new Date();
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(today.getMonth() - 6);
+        
+        startDate.value = sixMonthsAgo.toISOString().split('T')[0];
+        endDate.value = today.toISOString().split('T')[0];
+        
+        updateFinancialSummary();
+    }
+
+    function updateFinancialSummary() {
+        const totalInvestment = financialData.investments.reduce((sum, inv) => sum + inv.amount, 0);
+        const totalRevenue = financialData.revenues.reduce((sum, rev) => sum + rev.amount, 0);
+        const netProfit = totalRevenue - totalInvestment;
+        
+        document.getElementById('total-investment').textContent = `₹${totalInvestment.toLocaleString('en-IN')}`;
+        document.getElementById('total-revenue').textContent = `₹${totalRevenue.toLocaleString('en-IN')}`;
+        document.getElementById('net-profit').textContent = `₹${netProfit.toLocaleString('en-IN')}`;
+    }
+
+    function optimizeCosts() {
+        const currentInvestment = parseFloat(document.getElementById('current-investment').value);
+        const expectedYield = parseFloat(document.getElementById('expected-yield').value);
+        
+        if (!currentInvestment || !expectedYield) {
+            alert('Please enter both current investment and expected yield');
+            return;
+        }
+        
+        // Calculate optimization suggestions
+        const costPerKg = currentInvestment / expectedYield;
+        const optimizedInvestment = currentInvestment * 0.85; // 15% reduction
+        const optimizedYield = expectedYield * 1.1; // 10% increase
+        
+        const savings = currentInvestment - optimizedInvestment;
+        const additionalYield = optimizedYield - expectedYield;
+        
+        // Display results
+        const resultDiv = document.getElementById('optimization-result');
+        resultDiv.innerHTML = `
+            <h3 class="font-bold text-green-800 mb-2">Optimization Analysis</h3>
+            <p>• Potential Savings: ₹${savings.toLocaleString('en-IN')}</p>
+            <p>• Expected Yield Increase: ${additionalYield.toLocaleString('en-IN')} kg</p>
+            <p>• New Cost per kg: ₹${(optimizedInvestment/optimizedYield).toFixed(2)}</p>
+        `;
+        resultDiv.classList.remove('hidden');
+    }
+
+    function generateInvestmentPlan() {
+        const capital = parseFloat(document.getElementById('available-capital').value);
+        const period = parseInt(document.getElementById('investment-period').value);
+        
+        if (!capital || !period) {
+            alert('Please enter both available capital and investment period');
+            return;
+        }
+        
+        // Generate investment plan
+        const monthlyInvestment = capital / period;
+        const expectedReturn = capital * 1.2; // 20% return
+        
+        const resultDiv = document.getElementById('plan-result');
+        resultDiv.innerHTML = `
+            <h3 class="font-bold text-green-800 mb-2">Investment Plan:</h3>
+            <p>• Monthly Investment: ₹${monthlyInvestment.toLocaleString('en-IN')}</p>
+            <p>• Expected Return: ₹${expectedReturn.toLocaleString('en-IN')}</p>
+            <p>• ROI: 20%</p>
+        `;
+        resultDiv.classList.remove('hidden');
+    }
+
+    function updateCropSuitability() {
+        const state = stateSelect.value;
+        const soilType = document.getElementById('soil-type').value;
+        const climate = document.getElementById('climate').value;
+        const water = document.getElementById('water-availability').value;
+        
+        if (!state) {
+            alert('Please select a state first');
+            return;
+        }
+        
+        const stateData = cropSuitabilityData[state];
+        if (!stateData) {
+            alert('No data available for selected state');
+            return;
+        }
+        
+        const suitableCrops = stateData.suitableCrops.filter(cropId => {
+            const crop = crops.find(c => c.id === cropId);
+            return crop && 
+                   (!soilType || stateData.soil.includes(soilType)) &&
+                   (!climate || stateData.climate === climate) &&
+                   (!water || stateData.water === water);
+        });
+        
+        const resultsDiv = document.getElementById('suitability-result');
+        resultsDiv.innerHTML = suitableCrops.map(cropId => {
+            const crop = crops.find(c => c.id === cropId);
+            return `
+                <div class="crop-card bg-green-50 p-4 rounded-lg">
+                    <span class="text-3xl mb-2">${crop.symbol}</span>
+                    <h4 class="font-bold text-green-700">${crop.name}</h4>
+                    <p class="text-sm text-green-600">Suitable for ${state}</p>
+                </div>
+            `;
+        }).join('');
+        resultsDiv.classList.remove('hidden');
+    }
+
+    // Add event listeners
+    document.getElementById('optimize-btn').addEventListener('click', optimizeCosts);
+    document.getElementById('plan-btn').addEventListener('click', generateInvestmentPlan);
+    document.getElementById('analyze-btn').addEventListener('click', updateCropSuitability);
+
+    // Initialize financial tracking when the page loads
+    document.addEventListener('DOMContentLoaded', initializeFinancialTracking);
+  </script>
+</body>
+</html>

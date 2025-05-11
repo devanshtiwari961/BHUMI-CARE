@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farming News - BHUMI-CARE</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="news.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Farming & Crop News</h1>
+        <p>Latest Updates from the Agricultural World</p>
+    </header>
+
+    <nav>
+        <a href="../index.html">Home</a>
+        <a href="disease.html">Disease List</a>
+        <a href="news.html" class="active">News</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+
+    <div class="news-container">
+        <div class="news-filters">
+            <div class="search-box">
+                <input type="text" id="newsSearch" placeholder="Search news...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="category-filters">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="technology">Technology</button>
+                <button class="filter-btn" data-category="market">Market</button>
+                <button class="filter-btn" data-category="weather">Weather</button>
+                <button class="filter-btn" data-category="research">Research</button>
+            </div>
+        </div>
+
+        <div class="featured-news">
+            <div class="featured-card">
+                <div class="featured-content">
+                    <span class="category">Technology</span>
+                    <h2>Smart Farming: The Future of Agriculture</h2>
+                    <p>Discover how IoT and AI are revolutionizing traditional farming practices...</p>
+                    <div class="meta">
+                        <span><i class="far fa-clock"></i> 2 hours ago</span>
+                        <span><i class="far fa-eye"></i> 1.2k views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="news-grid">
+            <!-- News cards will be dynamically populated by JavaScript -->
+        </div>
+
+        <div class="load-more">
+            <button id="loadMoreBtn">Load More News</button>
+        </div>
+    </div>
+
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="newsDetails"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="disease.html">Disease List</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>Subscribe to Newsletter</h3>
+                <form id="newsletterForm">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Information</h3>
+                <p>Email: support@bhumicare.com</p>
+                <p>Phone: +91 1234567890</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BHUMI-CARE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="news.js"></script>
+</body>
+</html>

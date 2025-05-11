@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhumi Care - Community</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --primary-light: #4CAF50;
+            --secondary-color: #2196F3;
+            --text-color: #333;
+            --text-light: #666;
+            --background: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-links a.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .community-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .community-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: 0.1;
+        }
+
+        .community-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .community-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        .post-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            transition: var(--transition);
+        }
+
+        .form-group textarea:focus {
+            border-color: var(--primary-light);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .post-button {
+            background: var(--primary-light);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-button:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-button {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-button i {
+            font-size: 1.1rem;
+        }
+
+        .filter-button:hover {
+            background: #f0f0f0;
+            border-color: var(--primary-light);
+        }
+
+        .filter-button.active {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        .posts-container {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .post-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .post-time {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-text {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .action-button:hover {
+            background: #f0f0f0;
+            color: var(--primary-color);
+        }
+
+        .action-button.active {
+            color: var(--primary-color);
+        }
+
+        .comments-section {
+            padding: 1.5rem;
+            background: #f8f9fa;
+        }
+
+        .comment {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comment:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-author {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .comment-text {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-time {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #eee;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .comment-input:focus {
+            border-color: var(--primary-light);
+            outline: none;
+        }
+
+        .comment-submit {
+            background: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .comment-submit:hover {
+            background: var(--primary-color);
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-light);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .community-container {
+                margin: 1rem auto;
+            }
+
+            .community-header {
+                padding: 2rem 1rem;
+            }
+
+            .community-header h1 {
+                font-size: 2rem;
+            }
+
+            .post-actions {
+                flex-direction: column;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            Bhumi Care
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="community.html" class="active">Community</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+            <li><a href="weather.html">Weather</a></li>
+        </ul>
+    </nav>
+
+    <div class="community-container">
+        <div class="community-header">
+            <h1>Farmer Community</h1>
+            <p>Connect, share, and learn from fellow farmers</p>
+        </div>
+
+        <div class="post-form">
+            <div class="form-group">
+                <label for="postContent">Share your thoughts</label>
+                <textarea id="postContent" placeholder="What's on your mind? Share your farming experiences, questions, or tips..."></textarea>
+            </div>
+            <div class="post-actions">
+                <button class="post-button" onclick="addPost()">
+                    <i class="fas fa-paper-plane"></i> Share Post
+                </button>
+                <button class="post-button" onclick="document.getElementById('imageUpload').click()">
+                    <i class="fas fa-image"></i> Add Image
+                </button>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none" onchange="handleImageUpload(event)">
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-button active">
+                <i class="fas fa-th-large"></i> All Posts
+            </button>
+            <button class="filter-button">
+                <i class="fas fa-question-circle"></i> Questions
+            </button>
+            <button class="filter-button">
+                <i class="fas fa-lightbulb"></i> Tips & Tricks
+            </button>
+            <button class="filter-button">
+                <i class="fas fa-chart-line"></i> Market Updates
+            </button>
+            <button class="filter-button">
+                <i class="fas fa-users"></i> Community
+            </button>
+        </div>
+
+        <div class="posts-container">
+            <!-- Sample Post -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="User Avatar" class="author-avatar">
+                        <div class="author-info">
+                            <h3>Rajesh Kumar</h3>
+                            <span class="post-time">2 hours ago</span>
+                        </div>
+                    </div>
+                    <button class="action-button">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                <div class="post-content">
+                    <p class="post-text">Just harvested my first organic wheat crop! The results are amazing. Here are some tips that worked for me:</p>
+                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Wheat Field" class="post-image">
+                    <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                        <li>Regular soil testing</li>
+                        <li>Proper irrigation timing</li>
+                        <li>Natural pest control methods</li>
+                    </ul>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button" onclick="likePost(this)">
+                        <i class="far fa-heart"></i> Like
+                    </button>
+                    <button class="action-button" onclick="focusComment(this)">
+                        <i class="far fa-comment"></i> Comment
+                    </button>
+                    <button class="action-button">
+                        <i class="far fa-share-square"></i> Share
+                    </button>
+                </div>
+                <div class="comments-section">
+                    <div class="comment">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Commenter Avatar" class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-author">Priya Sharma</div>
+                            <p class="comment-text">Great tips! I've been struggling with pest control. Could you share more about the natural methods you used?</p>
+                            <span class="comment-time">1 hour ago</span>
+                        </div>
+                    </div>
+                    <div class="comment-form">
+                        <input type="text" class="comment-input" placeholder="Write a comment...">
+                        <button class="comment-submit" onclick="addComment(this)">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+        // Post functionality
+        function addPost() {
+            const content = document.getElementById('postContent').value;
+            if (!content.trim()) return;
+
+            showLoading();
+            // Simulate API call
+            setTimeout(() => {
+                hideLoading();
+                const postsContainer = document.querySelector('.posts-container');
+                const newPost = createPostElement('You', content);
+                postsContainer.insertBefore(newPost, postsContainer.firstChild);
+                document.getElementById('postContent').value = '';
+            }, 1000);
+        }
+
+        function createPostElement(author, content) {
+            const post = document.createElement('div');
+            post.className = 'post-card';
+            post.innerHTML = `
+                <div class="post-header">
+                    <div class="post-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="User Avatar" class="author-avatar">
+                        <div class="author-info">
+                            <h3>${author}</h3>
+                            <span class="post-time">Just now</span>
+                        </div>
+                    </div>
+                    <button class="action-button">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                <div class="post-content">
+                    <p class="post-text">${content}</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button" onclick="likePost(this)">
+                        <i class="far fa-heart"></i> Like
+                    </button>
+                    <button class="action-button" onclick="focusComment(this)">
+                        <i class="far fa-comment"></i> Comment
+                    </button>
+                    <button class="action-button">
+                        <i class="far fa-share-square"></i> Share
+                    </button>
+                </div>
+                <div class="comments-section">
+                    <div class="comment-form">
+                        <input type="text" class="comment-input" placeholder="Write a comment...">
+                        <button class="comment-submit" onclick="addComment(this)">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            return post;
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = document.getElementById('postContent').value;
+                    const postsContainer = document.querySelector('.posts-container');
+                    const newPost = createPostElement('You', content, e.target.result);
+                    postsContainer.insertBefore(newPost, postsContainer.firstChild);
+                    document.getElementById('postContent').value = '';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function likePost(button) {
+            const icon = button.querySelector('i');
+            icon.classList.toggle('far');
+            icon.classList.toggle('fas');
+            icon.classList.toggle('text-primary');
+        }
+
+        function focusComment(button) {
+            const commentInput = button.closest('.post-card').querySelector('.comment-input');
+            commentInput.focus();
+        }
+
+        function addComment(button) {
+            const commentInput = button.previousElementSibling;
+            const comment = commentInput.value.trim();
+            if (!comment) return;
+
+            const commentsSection = button.closest('.comments-section');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment';
+            newComment.innerHTML = `
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Commenter Avatar" class="comment-avatar">
+                <div class="comment-content">
+                    <div class="comment-author">You</div>
+                    <p class="comment-text">${comment}</p>
+                    <span class="comment-time">Just now</span>
+                </div>
+            `;
+            commentsSection.insertBefore(newComment, button.parentElement);
+            commentInput.value = '';
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                // Add filter logic here
+            });
+        });
+
+        // Loading state functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Indian State & Crop Budget Planner</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(to right, #b7f8db, #50a7c2);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgb(0 0 0 / 0.1);
+      max-width: 680px;
+      width: 100%;
+    }
+    .select-state {
+      position: relative;
+    }
+    /* Map popup modal */
+    #map-popup {
+      background: rgba(0,0,0,0.6);
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    #map-popup.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    #map-popup-content {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem 2rem;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgb(0 0 0 / 0.3);
+      position: relative;
+      width: 460px;
+    }
+    #map-popup h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #047857;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    #map-popup svg path {
+      fill: #10B981;
+      stroke: #065F46;
+      stroke-width: 1.2;
+      transition: fill 0.3s ease;
+      cursor: pointer;
+    }
+    #map-popup svg path:hover {
+      fill: #059669;
+    }
+    #map-popup svg text {
+      font-size: 10px;
+      fill: #064E3B;
+      font-weight: 600;
+      pointer-events: none;
+      user-select: none;
+    }
+    #close-popup {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: #D1FAE5;
+      border: none;
+      border-radius: 9999px;
+      width: 32px;
+      height: 32px;
+      font-size: 1.3rem;
+      color: #059669;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #close-popup:hover {
+      background-color: #34D399;
+      color: white;
+    }
+    input[type="number"], input[type="text"], select {
+      border: 2px solid #10B981;
+      border-radius: 10px;
+      padding: 0.5rem;
+      font-size: 1.1rem;
+      width: 100%;
+      margin-top: 0.3rem;
+      margin-bottom: 1rem;
+      outline-offset: 2px;
+      transition: border-color 0.25s ease;
+    }
+    input[type="number"]:focus, input[type="text"]:focus, select:focus {
+      border-color: #047857;
+      box-shadow: 0 0 6px 1px #047857aa;
+    }
+    button {
+      background: #10B981;
+      color: white;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgb(16 185 129 / 0.6);
+      transition: background 0.3s ease;
+      margin-top: 0.5rem;
+      user-select: none;
+    }
+    button:hover {
+      background: #059669;
+      box-shadow: 0 6px 14px rgb(5 150 105 / 0.75);
+    }
+    #result {
+      margin-top: 1.4rem;
+      background: #D1FAE5;
+      border-radius: 15px;
+      padding: 1rem 1.5rem;
+      color: #065F46;
+      font-weight: 600;
+      font-size: 1.25rem;
+      min-height: 3rem;
+      box-shadow: inset 0 0 8px rgb(4 120 87 / 0.4);
+      text-align: center;
+      user-select: none;
+    }
+    /* Crop selection grid and styles */
+    #crop-selection {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      margin-top: 1rem;
+    }
+    .crop-box {
+      background: #D9F99D;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgb(72 187 120 / 0.3);
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      padding: 1rem 0.75rem;
+      text-align: center;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: 600;
+      color: #22543D;
+      font-size: 1.15rem;
+      border: 3px solid transparent;
+    }
+    .crop-box:hover,
+    .crop-box:focus {
+      outline: none;
+      transform: scale(1.08);
+      box-shadow: 0 6px 12px rgb(56 161 105 / 0.6);
+      background: linear-gradient(135deg, #9AE6B4 0%, #68D391 50%, #38D169 100%);
+      color: #F0FFF4;
+      font-weight: 700;
+    }
+    .crop-symbol {
+      font-size: 2.8rem;
+      margin-bottom: 0.3rem;
+      line-height: 1;
+    }
+    .crop-box.selected {
+      border-color: #059669;
+      background: linear-gradient(145deg, #68D391, #34D399);
+      color: white;
+      box-shadow: 0 0 15px #22c55e;
+      transform: scale(1.1);
+      font-weight: 700;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem 1rem;
+      }
+      .crop-box {
+        font-size: 1rem;
+        padding: 0.8rem 0.5rem;
+      }
+      .crop-symbol {
+        font-size: 2.2rem;
+      }
+    }
+    .section-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+    .section-card h2 {
+      border-bottom: 2px solid #10B981;
+      padding-bottom: 0.5rem;
+      color: #065F46;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .crop-card {
+      background: #D1FAE5;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .crop-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Indian State and Crop Budget Planner">
+    <h1 class="text-3xl font-extrabold text-green-800 mb-6 text-center select-none">🧾 Indian State & Crop Budget Planner</h1>
+
+    <!-- State selection with dropdown and map -->
+    <label for="state-select" class="block text-green-700 font-semibold mb-1 cursor-pointer select-none">Select State <span aria-hidden="true">📍</span></label>
+    <div class="flex gap-2 mb-4">
+      <select id="state-select" aria-describedby="state-help" class="border-2 border-green-500 rounded-lg p-2 text-green-900 font-semibold w-full" aria-label="Select Indian State">
+        <option value="" disabled selected>Choose a state</option>
+      </select>
+      <button id="open-map" aria-label="Open state map" class="bg-green-500 text-white rounded-lg px-4 py-2 hover:bg-green-600 transition-shadow shadow-md" type="button">🗺 Map</button>
+    </div>
+    <p id="state-help" class="text-green-600 text-sm mb-4 select-none">Select your Indian state from the dropdown or the map.</p>
+
+    <!-- Crop Selection Section -->
+    <label for="crop-selection" class="text-green-700 font-semibold mb-2 block select-none">Select Crop Type <span aria-hidden="true">🌽</span></label>
+    <div id="crop-selection" role="list" aria-label="List of crop types">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Land area input -->
+    <label for="land-area" class="block font-semibold text-green-700 mb-1">Land Area (in acres) <span aria-hidden="true">🌾</span></label>
+    <input type="number" id="land-area" placeholder="Enter land area" min="0" step="0.01" aria-describedby="land-area-help" />
+
+    <!-- Electricity cost input -->
+    <label for="electricity-cost" class="block font-semibold text-green-700 mb-1 mt-4">Cost per Electricity Unit (₹) <span aria-hidden="true">⚡</span></label>
+    <input type="number" id="electricity-cost" placeholder="Enter cost per unit" min="0" step="0.01" aria-describedby="elec-cost-help"/>
+
+    <button id="calculate-btn" aria-label="Calculate estimated cost">💰 Calculate Estimate</button>
+
+    <div id="result" aria-live="polite" aria-atomic="true" role="region"></div>
+  </div>
+
+  <!-- Map Popup -->
+  <div id="map-popup" role="dialog" aria-modal="true" aria-labelledby="map-title" tabindex="-1">
+    <div id="map-popup-content">
+      <button id="close-popup" aria-label="Close Map Popup" title="Close">×</button>
+      <h3 id="map-title">Select a State <span aria-hidden="true">🇮🇳</span></h3>
+      <!-- Simplified map as before -->
+      <svg viewBox="0 0 800 800" width="100%" height="300" aria-label="Map of India" role="img" xmlns="http://www.w3.org/2000/svg" >
+        <path id="MH" d="M250 400 l45 -20 l20 45 l-40 30 Z" tabindex="0" aria-label="Maharashtra" />
+        <path id="UP" d="M350 300 l50 10 l10 50 l-50 20 Z" tabindex="0" aria-label="Uttar Pradesh" />
+        <path id="TN" d="M300 620 l40 -15 l15 35 l-35 45 Z" tabindex="0" aria-label="Tamil Nadu" />
+        <path id="RJ" d="M200 350 l30 -10 l20 40 l-35 30 Z" tabindex="0" aria-label="Rajasthan" />
+        <path id="WB" d="M420 350 l25 15 l5 40 l-30 20 Z" tabindex="0" aria-label="West Bengal" />
+        <path id="KA" d="M270 530 l35 -30 l30 35 l-40 40 Z" tabindex="0" aria-label="Karnataka" />
+        <text x="265" y="395" fill="#064E3B" font-size="14" font-weight="700" pointer-events="none" user-select="none">MH</text>
+        <text x="365" y="340" fill="#064E3B" font-size="14" font-weight="700" pointer-events="none" user-select="none">UP</text>
+        <text x="305" y="620" fill="#064E3B" font-size="14" font-weight="700" pointer-events="none" user-select="none">TN</text>
+        <text x="205" y="370" fill="#064E3B" font-size="14" font-weight="700" pointer-events="none" user-select="none">RJ</text>
+        <text x="425" y="380" fill="#064E3B" font-size="14" font-weight="700" pointer-events="none" user-select="none">WB</text>
+        <text x="275" y="530" fill="#064E3B" font-size="14" font-weight="700" pointer-events="none" user-select="none">KA</text>
+      </svg>
+      <p class="text-green-700 mt-3 text-sm select-none">* Click or press Enter/Space on a state to select it.</p>
+    </div>
+  </div>
+
+  <!-- Financial Planning & Optimization Section (merged from financial-planning.html) -->
+  <div class="container mt-12">
+    <h1 class="text-4xl font-bold text-green-800 mb-8 text-center">Financial Planning & Optimization</h1>
+
+    <!-- Cost Optimization Section -->
+    <div class="section-card">
+      <h2>Cost Optimization</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="current-investment" class="block font-semibold text-green-700 mb-1">Current Investment (₹)</label>
+          <input type="number" id="current-investment" placeholder="Enter current investment" min="0" step="1000" />
+        </div>
+        <div>
+          <label for="expected-yield" class="block font-semibold text-green-700 mb-1">Expected Yield (kg)</label>
+          <input type="number" id="expected-yield" placeholder="Enter expected yield" min="0" step="100" />
+        </div>
+      </div>
+      <button id="optimize-btn">Optimize Costs</button>
+      <div id="optimization-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden"></div>
+    </div>
+
+    <!-- Investment Planning Section -->
+    <div class="section-card">
+      <h2>Investment Planning</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="available-capital" class="block font-semibold text-green-700 mb-1">Available Capital (₹)</label>
+          <input type="number" id="available-capital" placeholder="Enter available capital" min="0" step="1000" />
+        </div>
+        <div>
+          <label for="investment-period" class="block font-semibold text-green-700 mb-1">Investment Period (months)</label>
+          <input type="number" id="investment-period" placeholder="Enter investment period" min="1" max="60" />
+        </div>
+      </div>
+      <button id="plan-btn">Generate Investment Plan</button>
+      <div id="plan-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden"></div>
+    </div>
+
+    <!-- Crop Suitability Analysis -->
+    <div class="section-card">
+      <h2>Crop Suitability Analysis</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label for="soil-type" class="block font-semibold text-green-700 mb-1">Soil Type</label>
+          <select id="soil-type" class="w-full">
+            <option value="">Select soil type</option>
+            <option value="clay">Clay</option>
+            <option value="sandy">Sandy</option>
+            <option value="loamy">Loamy</option>
+            <option value="black">Black</option>
+            <option value="red">Red</option>
+          </select>
+        </div>
+        <div>
+          <label for="climate" class="block font-semibold text-green-700 mb-1">Climate</label>
+          <select id="climate" class="w-full">
+            <option value="">Select climate</option>
+            <option value="tropical">Tropical</option>
+            <option value="subtropical">Subtropical</option>
+            <option value="temperate">Temperate</option>
+            <option value="arid">Arid</option>
+          </select>
+        </div>
+        <div>
+          <label for="water-availability" class="block font-semibold text-green-700 mb-1">Water Availability</label>
+          <select id="water-availability" class="w-full">
+            <option value="">Select water availability</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </div>
+      <button id="analyze-btn">Analyze Suitability</button>
+      <div id="suitability-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden"></div>
+    </div>
+
+    <!-- Financial Tracking -->
+    <div class="section-card">
+      <h2>Financial Tracking</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="start-date" class="block font-semibold text-green-700 mb-1">Start Date</label>
+          <input type="date" id="start-date" class="w-full" />
+        </div>
+        <div>
+          <label for="end-date" class="block font-semibold text-green-700 mb-1">End Date</label>
+          <input type="date" id="end-date" class="w-full" />
+        </div>
+      </div>
+      <button id="track-btn">Track Finances</button>
+      <div id="tracking-result" class="mt-4 p-4 bg-green-50 rounded-lg hidden">
+        <canvas id="financial-chart" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Full Indian states and UT list
+    const indiaStates = [
+      "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat",
+      "Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh",
+      "Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab",
+      "Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh",
+      "Uttarakhand","West Bengal",
+      "Andaman and Nicobar Islands","Chandigarh","Dadra and Nagar Haveli and Daman and Diu",
+      "Delhi","Jammu and Kashmir","Ladakh","Lakshadweep","Puducherry"
+    ];
+
+    // States code to name for map (only few)
+    const stateMap = {
+      'MH': 'Maharashtra',
+      'UP': 'Uttar Pradesh',
+      'TN': 'Tamil Nadu',
+      'RJ': 'Rajasthan',
+      'WB': 'West Bengal',
+      'KA': 'Karnataka'
+    };
+
+    // Crop data: id, symbol, name, cost multiplier factor
+    const crops = [
+      {id: "wheat", symbol: "🌾", name: "Wheat", costFactor: 1.0},
+      {id: "rice", symbol: "🍚", name: "Rice", costFactor: 1.3},
+      {id: "corn", symbol: "🌽", name: "Corn", costFactor: 1.1},
+      {id: "soybean", symbol: "🌱", name: "Soybean", costFactor: 1.0},
+      {id: "barley", symbol: "🌾", name: "Barley", costFactor: 0.9},
+      {id: "cotton", symbol: "💧", name: "Cotton", costFactor: 1.5},
+      {id: "potato", symbol: "🥔", name: "Potato", costFactor: 1.2},
+      {id: "tomato", symbol: "🍅", name: "Tomato", costFactor: 1.4},
+      {id: "coffee", symbol: "☕", name: "Coffee", costFactor: 2.0},
+      {id: "tea", symbol: "🍵", name: "Tea", costFactor: 1.8},
+      {id: "sugarcane", symbol: "🍬", name: "Sugarcane", costFactor: 1.2},
+      {id: "banana", symbol: "🍌", name: "Banana", costFactor: 1.6},
+      {id: "olive", symbol: "🫒", name: "Olive", costFactor: 2.2},
+      {id: "sunflower", symbol: "🌻", name: "Sunflower", costFactor: 1.1}
+    ];
+
+    const stateSelect = document.getElementById('state-select');
+    const stateInput = document.getElementById('state-display'); // might keep for compatibility or remove
+    const openMapBtn = document.getElementById('open-map');
+    const mapPopup = document.getElementById('map-popup');
+    const closePopupBtn = document.getElementById('close-popup');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resultDiv = document.getElementById('result');
+    const landAreaInput = document.getElementById('land-area');
+    const elecCostInput = document.getElementById('electricity-cost');
+    const cropSelection = document.getElementById('crop-selection');
+
+    let selectedCropId = null;
+
+    // Populate dropdown for states
+    function populateStateDropdown(){
+      indiaStates.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+      });
+    }
+
+    // Populate crop selection boxes
+    function populateCropSelection() {
+      crops.forEach(crop => {
+        const box = document.createElement('div');
+        box.className = 'crop-box';
+        box.setAttribute('tabindex', '0');
+        box.setAttribute('role', 'button');
+        box.setAttribute('aria-label', `Select crop type: ${crop.name}`);
+        box.dataset.cropId = crop.id;
+
+        const symbolSpan = document.createElement('span');
+        symbolSpan.className = 'crop-symbol';
+        symbolSpan.textContent = crop.symbol;
+        box.appendChild(symbolSpan);
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = crop.name;
+        box.appendChild(nameSpan);
+
+        // Click or keyboard select event
+        box.addEventListener('click', () => selectCrop(crop.id));
+        box.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectCrop(crop.id);
+          }
+        });
+
+        cropSelection.appendChild(box);
+      });
+    }
+
+    // Select crop and update UI highlight
+    function selectCrop(cropId) {
+      if (selectedCropId === cropId) return; // Same crop selected, no change
+
+      selectedCropId = cropId;
+
+      // Clear previous selection
+      const boxes = cropSelection.querySelectorAll('.crop-box');
+      boxes.forEach(box => {
+        if (box.dataset.cropId === cropId) {
+          box.classList.add('selected');
+          box.setAttribute('aria-pressed', 'true');
+        } else {
+          box.classList.remove('selected');
+          box.setAttribute('aria-pressed', 'false');
+        }
+      });
+      resultDiv.textContent = '';
+    }
+
+    // Sync map selection with dropdown
+    function selectState(stateName){
+      // Set dropdown value if exists
+      if([...stateSelect.options].some(opt=>opt.value === stateName)){
+        stateSelect.value = stateName;
+      } else {
+        stateSelect.value = "";
+      }
+      resultDiv.textContent = '';
+      landAreaInput.focus();
+    }
+
+    // Open map popup
+    openMapBtn.addEventListener('click', () => {
+      mapPopup.classList.add('active');
+      mapPopup.focus();
+    });
+
+    // Close popup
+    closePopupBtn.addEventListener('click', () => {
+      mapPopup.classList.remove('active');
+      openMapBtn.focus();
+    });
+
+    // Close popup on outside click
+    mapPopup.addEventListener('click', (e) => {
+      if(e.target === mapPopup) {
+        mapPopup.classList.remove('active');
+        openMapBtn.focus();
+      }
+    });
+
+    // Keyboard navigation for popup close
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && mapPopup.classList.contains('active')) {
+        mapPopup.classList.remove('active');
+        openMapBtn.focus();
+      }
+    });
+
+    // Handle state selection from map
+    const paths = mapPopup.querySelectorAll('svg path');
+    paths.forEach(path => {
+      function handleSelect() {
+        const stateCode = path.id;
+        const stateName = stateMap[stateCode] || stateCode;
+        selectState(stateName);
+        mapPopup.classList.remove('active');
+      }
+      path.addEventListener('click', handleSelect);
+      path.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleSelect();
+        }
+      });
+    });
+
+    // Sync dropdown change to update input and clear result
+    stateSelect.addEventListener('change', () => {
+      resultDiv.textContent = '';
+      landAreaInput.focus();
+    });
+
+    // Calculation logic with crop factor
+    calculateBtn.addEventListener('click', () => {
+      const state = stateSelect.value.trim();
+      const landArea = parseFloat(landAreaInput.value);
+      const elecCost = parseFloat(elecCostInput.value);
+      const crop = crops.find(c => c.id === selectedCropId);
+
+      if(!state) {
+        alert('Please select a state first from dropdown or map.');
+        stateSelect.focus();
+        return;
+      }
+      if(!crop) {
+        alert('Please select a crop type.');
+        cropSelection.querySelector('.crop-box')?.focus();
+        return;
+      }
+      if(isNaN(landArea) || landArea <= 0) {
+        alert('Please enter a valid land area (a positive number).');
+        landAreaInput.focus();
+        return;
+      }
+      if(isNaN(elecCost) || elecCost <= 0) {
+        alert('Please enter a valid electricity cost per unit (a positive number).');
+        elecCostInput.focus();
+        return;
+      }
+
+      // Estimate cost formula:
+      // base cost per acre: 10,000, modulated by crop cost factor
+      // electricity cost multiplied by 5000 and modulated by crop cost factor
+      // total = cropFactor * (landArea * 10000 + elecCost * 5000)
+      const estimatedCost = crop.costFactor * (landArea * 10000 + elecCost * 5000);
+
+      resultDiv.textContent = `🌟 Estimated Cost for growing ${crop.name} in ${state}: ₹${estimatedCost.toLocaleString('en-IN')} (land area & electricity cost considered)`;
+    });
+
+    // Initialization
+    populateStateDropdown();
+    populateCropSelection();
+
+  </script>
+</body>
+</html>

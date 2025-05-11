@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>40 Types of Farming - Crop Info</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem 1rem 4rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    h1 {
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(100px,1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 2rem;
+      user-select: none;
+    }
+    .crop-box {
+      background: #D9F99D;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgb(34 197 94 / 0.5);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(.4,2,.3,1), box-shadow 0.2s cubic-bezier(.4,2,.3,1), background 0.2s;
+      padding: 1.25rem 0.75rem 1rem 0.75rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: 700;
+      color: #166534;
+      font-size: 1.25rem;
+      border: 3px solid transparent;
+      user-select: none;
+    }
+    .crop-box:hover,
+    .crop-box:focus {
+      outline: none;
+      transform: scale(1.08) translateY(-4px);
+      background: linear-gradient(135deg, #bef264 0%, #4ade80 50%, #22c55e 100%);
+      color: #f0fdf4;
+      box-shadow: 0 8px 32px 0 rgba(34,197,94,0.25), 0 1.5px 6px 0 rgba(0,0,0,0.08);
+      border-color: #059669;
+      z-index: 2;
+      position: relative;
+    }
+    .crop-symbol {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+      user-select: none;
+    }
+    #info-panel {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgb(22 101 52 / 0.25);
+      border: 2px solid #4ade80;
+      max-width: 900px;
+      width: 100%;
+      padding: 2rem 3rem;
+      color: #14532d;
+      user-select: text;
+      max-height: 440px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      margin-bottom: 50px;
+    }
+    #info-panel h2 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      border-bottom: 4px solid #22c55e;
+      padding-bottom: 0.5rem;
+      text-shadow: 0 1px 3px rgba(17,94,11,0.4);
+    }
+    #info-panel section {
+      margin-bottom: 1.8rem;
+    }
+    #info-panel h3 {
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      font-size: 1.4rem;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: text;
+    }
+    #info-panel p,
+    #info-panel ul {
+      font-size: 1.15rem;
+      line-height: 1.5;
+      margin-left: 1.6rem;
+      margin-bottom: 0.5rem;
+      color: #14532d;
+      user-select: text;
+    }
+    #info-panel ul {
+      list-style-type: disc;
+      padding-left: 1.8rem;
+    }
+    #info-panel ul li {
+      margin-bottom: 0.35rem;
+    }
+    /* Scrollbar styling for info panel */
+    #info-panel::-webkit-scrollbar {
+      width: 10px;
+    }
+    #info-panel::-webkit-scrollbar-track {
+      background: #d1fae5;
+      border-radius: 12px;
+    }
+    #info-panel::-webkit-scrollbar-thumb {
+      background: #4ade80;
+      border-radius: 12px;
+    }
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .crop-box {
+        font-size: 1rem;
+        padding: 0.8rem 0.5rem 0.7rem 0.5rem;
+      }
+      .crop-symbol {
+        font-size: 2rem;
+        margin-bottom: 0.3rem;
+      }
+      #info-panel {
+        padding: 1.4rem 1.6rem;
+        max-height: 300px;
+      }
+      #info-panel h2 {
+        font-size: 1.8rem;
+      }
+      #info-panel h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        gap: 0.3rem;
+      }
+      #info-panel p, #info-panel ul {
+        font-size: 1rem;
+        line-height: 1.3;
+        margin-left: 1.2rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        max-width: 100vw;
+        gap: 0.7rem;
+      }
+      #info-panel {
+        padding: 1rem 0.5rem;
+        max-width: 98vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="text-4xl font-extrabold text-green-900 mb-8 select-none text-center max-w-full">
+    🌱 Select a Crop for Farming Info
+  </h1>
+
+  <div class="grid-container" role="list" aria-label="List of 40 farming types">
+    <!-- Boxes will be inserted dynamically -->
+  </div>
+
+  <div id="info-panel" role="region" aria-live="polite" aria-atomic="true" tabindex="0" hidden>
+    <h2 id="info-title"></h2>
+    <section id="how-section" aria-label="How to grow this crop">
+      <h3>🌿 How to grow:</h3>
+      <p id="info-how"></p>
+    </section>
+    <section id="pros-section" aria-label="Pros of this crop farming">
+      <h3>✅ Pros:</h3>
+      <ul id="info-pros"></ul>
+    </section>
+    <section id="cons-section" aria-label="Cons of this crop farming">
+      <h3>⚠ Cons:</h3>
+      <ul id="info-cons"></ul>
+    </section>
+  </div>
+
+  <script>
+    const crops = [
+      { id: "wheat", symbol: "🌾", name: "Wheat", how: "Prepare well-drained loamy soil; timely sowing; irrigation at critical stages; crop rotation; use fertilizers.", pros: ["High nutrition and staple worldwide", "Good for large scale moderate climate farming", "Strong market demand"], cons: ["Disease susceptible", "Needs moisture management", "Climate dependent"] },
+      { id: "rice", symbol: "🍚", name: "Rice", how: "Use paddy fields with standing water; transplant seedlings after nursery; manage water and fertilizer carefully.", pros: ["Staple for billions", "Flood reduces weeds", "Grows in diverse irrigated regions"], cons: ["High water usage", "Methane emissions", "Labor-intensive"] },
+      { id: "corn", symbol: "🌽", name: "Corn", how: "Requires fertile, well-drained soil with sunlight; proper seed spacing; fertilizer management; irrigation during pollination.", pros: ["Versatile for food, feed, fuel", "High yield with hybrids", "Good income potential"], cons: ["Pest vulnerability", "Needs fertilization", "Soil depletion risk"] },
+      { id: "soybean", symbol: "🌱", name: "Soybean", how: "Plant in well-drained moderate pH soils; crop rotation prevents diseases; timely pest management necessary.", pros: ["Protein and oil source", "Improves soil nitrogen", "High market demand"], cons: ["Drought sensitivity", "Fungal diseases", "Price volatility"] },
+      { id: "barley", symbol: "🌾", name: "Barley", how: "Grows in cooler climates; needs well-drained soil, moderate fertilizer; dry harvest conditions.", pros: ["Food, feed, brewing uses", "Short season", "Tolerates poor soils"], cons: ["Rain-sensitive at harvest", "Disease prone", "Lower market value"] },
+      { id: "cotton", symbol: "💧", name: "Cotton", how: "Deep fertile soil; plant post frost; adequate irrigation and pest control.", pros: ["High global demand fiber", "Semi-arid tolerant", "Supports textile industry"], cons: ["High water use", "Pesticide intensive", "Labor intensive harvest"] },
+      { id: "potato", symbol: "🥔", name: "Potato", how: "Loose well-drained soil; plant seed tubers in ridges; hilling and watering important.", pros: ["High calorie tuber", "Adaptable climates", "Short cycle"], cons: ["Beetle pests", "Late blight disease", "Storage requires care"] },
+      { id: "tomato", symbol: "🍅", name: "Tomato", how: "Requires warm well-drained loamy soil; transplant seedlings; control pests and diseases well.", pros: ["High nutrition", "Greenhouse or field", "Multiple harvests"], cons: ["Fungal and bacterial diseases", "Temperature sensitive", "Pest prone"] },
+      { id: "coffee", symbol: "☕", name: "Coffee", how: "Tropical rich well-drained soil; shade management; handpicked cherries; pruning and pest control.", pros: ["High-value crop", "Erosion control", "Agroforestry compatible"], cons: ["Labor intensive", "Climate change sensitive", "Long maturation"] },
+      { id: "tea", symbol: "🍵", name: "Tea", how: "Acidic, well-drained soils in tropics; hand plucking leaves; regular pruning and pest control.", pros: ["Popular beverage", "High export value", "Hilly terrain compatible"], cons: ["Labor intensive", "Frost/drought sensitive", "Soil degradation risk"] },
+      { id: "sugarcane", symbol: "🍬", name: "Sugarcane", how: "Tropical; deep fertile soils; propagates by cuttings; irrigation and fertilizer needed.", pros: ["Sugar and biofuels source", "High biomass yield", "Erosion control"], cons: ["Water intensive", "Pests and diseases", "Long growing cycle"] },
+      { id: "banana", symbol: "🍌", name: "Banana", how: "Warm humid climate; rich soil; suckers planted; irrigation and wind protection needed.", pros: ["Year-round demand", "Nutritional value", "Rapid growth"], cons: ["Fungal diseases", "High water needs", "Wind damage risk"] },
+      { id: "olive", symbol: "🫒", name: "Olive", how: "Mediterranean climate; rocky well-drained soils; pruning and watering during dry months.", pros: ["Healthy oil", "Drought tolerant", "Long productive life"], cons: ["Slow maturity", "Cold sensitive", "Requires pruning"] },
+      { id: "sunflower", symbol: "🌻", name: "Sunflower", how: "Well-drained soil and full sun; plant after frost; moderate irrigation needed.", pros: ["Oil and snack seeds", "Attracts pollinators", "Easy to grow"], cons: ["Birds damage", "Fungal diseases", "Needs soil prep"] },
+      { id: "apple", symbol: "🍎", name: "Apple", how: "Temperate climates; well-drained soil; pruning and frost protection critical.", pros: ["Popular fruit", "Good processing usability", "Supports biodiversity"], cons: ["Frost sensitive", "Labor intensive", "Long-term care"] },
+      { id: "grape", symbol: "🍇", name: "Grape", how: "Temperate with dry summers; well-drained soil; pruning, pest control.", pros: ["Wine and fresh fruit", "High demand", "Sloped land suitable"], cons: ["Fungal risks", "Labor for pruning", "Water sensitive"] },
+      { id: "carrot", symbol: "🥕", name: "Carrot", how: "Loose sandy soil, consistent moisture; thinning and weed control.", pros: ["Nutrient rich", "Short cycle", "Good demand"], cons: ["Soil compaction sensitive", "Pest prone", "Irrigation needed"] },
+      { id: "lettuce", symbol: "🥬", name: "Lettuce", how: "Cool climates; nutrient-rich moist soil; often greenhouse grown.", pros: ["High demand", "Multiple harvests", "Short cycle"], cons: ["Temperature sensitivity", "Pest prone", "Water needs"] },
+      { id: "cabbage", symbol: "🌿", name: "Cabbage", how: "Cool, well-drained soil; fertilization and pest control.", pros: ["Nutritious", "Long storage", "Good yields"], cons: ["Pests", "Heat sensitive", "Irrigation required"] },
+      { id: "pea", symbol: "🌱", name: "Pea", how: "Cool weather; loamy soil; support for climbing.", pros: ["Protein rich", "Nitrogen fixing", "Short season"], cons: ["Frost sensitive", "Diseases", "Support needed"] },
+      { id: "pumpkin", symbol: "🎃", name: "Pumpkin", how: "Warm weather; rich soil; space for vines.", pros: ["Nutrient rich", "Good market", "Stores well"], cons: ["Space needed", "Pests", "High water demand"] },
+      { id: "mango", symbol: "🥭", name: "Mango", how: "Tropical/subtropical; well-drained soil; pruning and pest management.", pros: ["High value", "Popular", "Long lifespan"], cons: ["Frost sensitive", "Long juvenile phase", "Disease prone"] },
+      { id: "coconut", symbol: "🥥", name: "Coconut", how: "Tropical coastal; sandy soil; irrigation needed in dry.", pros: ["Multiple uses", "Drought tolerant", "Coastal stability"], cons: ["Slow to mature", "Wind damage", "Labor intensive"] },
+      { id: "pepper", symbol: "🌶", name: "Pepper", how: "Warm, fertile soil; shade; staking and pest control.", pros: ["High value", "Fresh/dried use", "Good demand"], cons: ["Pests", "Labor for staking", "Water needs"] },
+      { id: "onion", symbol: "🧅", name: "Onion", how: "Cool to moderate climate; bulb thinning; weed control.", pros: ["Widely used", "Good storage", "High demand"], cons: ["Pests/diseases", "Field prep", "Water management"] },
+      { id: "cucumber", symbol: "🥒", name: "Cucumber", how: "Warm; fertile soil; trellising; frequent watering.", pros: ["Popular", "Fast growth", "Good yields"], cons: ["Pests", "Disease prone", "Needs water"] },
+      { id: "cauliflower", symbol: "🥦", name: "Cauliflower", how: "Cool climate; fertile moist soil; protects from heat.", pros: ["Nutrient dense", "Good demand", "Multiple harvests"], cons: ["Pests", "Temperature sensitivity", "Irrigation"] },
+      { id: "sweet_potato", symbol: "🍠", name: "Sweet Potato", how: "Warm climate; sandy loam soil; plant slips; water regularly.", pros: ["Nutritious tuber", "Drought tolerant", "Low maintenance"], cons: ["Pests", "Drainage needed", "Harvest timing"] },
+      { id: "pineapple", symbol: "🍍", name: "Pineapple", how: "Tropical; sandy loam; plant crowns; weed free; fertilize.", pros: ["High value fruit", "Drought tolerant", "Long storage"], cons: ["Slow growth", "Pests/diseases", "Soil management"] },
+      { id: "almond", symbol: "🌰", name: "Almond", how: "Mediterranean climate; deep soil; pest control necessary.", pros: ["Nutritious nuts", "High demand", "Drought tolerant"], cons: ["Pest sensitive", "Frost sensitive", "Long time to mature"] },
+      { id: "apricot", symbol: "🍑", name: "Apricot", how: "Prefers temperate climate; requires well-drained soil.", pros: ["Delicious fruit", "High market value", "Cold resistance"], cons: ["Frost damage risk", "Pests", "Short season"] },
+      { id: "avocado", symbol: "🥑", name: "Avocado", how: "Warm subtropical; well-drained soil; moderate water.", pros: ["Nutrient dense fruit", "High value", "Good oil source"], cons: ["Cold sensitive", "Slow growing", "Pest prone"] },
+      { id: "beetroot", symbol: "🍠", name: "Beetroot", how: "Cool soil; loose; regular watering; weed control.", pros: ["Rich in nutrients", "Short season", "Good market"], cons: ["Pests", "Soil compaction risk", "Fungal issues"] },
+      { id: "chickpea", symbol: "🍛", name: "Chickpea", how: "Well-drained loamy soil; moderate rainfall; pest control.", pros: ["Good protein source", "Nitrogen fixer", "Moderate water"], cons: ["Disease prone", "Frost sensitive", "Low yields"] },
+      { id: "cottonseed", symbol: "🌿", name: "Cottonseed", how: "Fertile soil; frost-free; irrigation; pest control.", pros: ["High fiber demand", "Semi-arid tolerant", "Supports economy"], cons: ["Water intensive", "Pesticides", "Labor demands"] },
+      { id: "flax", symbol: "🌾", name: "Flax", how: "Cool climate; well-drained soils; moderate moisture.", pros: ["Oil and fiber source", "Short season", "Soil improvement"], cons: ["Disease risks", "Low tolerance to drought", "Market price sensitive"] },
+      { id: "garlic", symbol: "🧄", name: "Garlic", how: "Cool, moist conditions; well-drained soil; disease control.", pros: ["Culinary uses", "High market demand", "Rich nutrients"], cons: ["Pests", "Requires care during storage", "Labor intensive"] },
+      { id: "lentil", symbol: "🥣", name: "Lentil", how: "Loamy, well-drained soil; moderate watering; pests managed.", pros: ["Protein rich", "Nitrogen fixing", "Drought tolerant"], cons: ["Temperature sensitive", "Prone to diseases", "Yield variability"] },
+      { id: "millet", symbol: "🌿", name: "Millet", how: "Grows in poor soils, drought resistant; minimal inputs.", pros: ["Drought tolerant", "Short growing season", "Good nutrition"], cons: ["Low yields", "Limited market", "Less researched crop"] },
+      { id: "okra", symbol: "🍆", name: "Okra", how: "Warm weather; fertile, well-drained soils; irrigation.", pros: ["High in vitamins", "Fast growing", "Good market"], cons: ["Pests", "Disease prone", "Short shelf life"] },
+      { id: "peanut", symbol: "🥜", name: "Peanut", how: "Sandy loam soil; warm climate; moderate moisture.", pros: ["Good oil source", "Nitrogen fixing", "High demand"], cons: ["Pests", "Mold risk", "Climate sensitive"] },
+      { id: "pear", symbol: "🍐", name: "Pear", how: "Temperate climate; well-drained soils; frost protection.", pros: ["Popular fruit", "Good market", "Long storage"], cons: ["Pests", "Frost damage", "Labor for pruning"] },
+      { id: "pea", symbol: "🌱", name: "Pea", how: "Cool weather; well-drained loamy soils; support for climbing plants.", pros: ["Nitrogen fixing", "Protein source", "Short season"], cons: ["Frost sensitive", "Needs support", "Disease prone"] },
+      { id: "pomegranate", symbol: "🍎", name: "Pomegranate", how: "Tolerant to drought; well-drained soils; requires pruning.", pros: ["High vitamin C", "Drought tolerant", "Good market"], cons: ["Pests", "Cold sensitive", "Yield fluctuations"] },
+      { id: "radish", symbol: "🌶", name: "Radish", how: "Cool soil; loose; regular watering and weed control.", pros: ["Fast growing", "Good market", "Nutrient rich"], cons: ["Pests", "Short shelf life", "Temperature sensitive"] },
+      { id: "sesame", symbol: "🌾", name: "Sesame", how: "Warm climate; well-drained sandy soils; drought resistant.", pros: ["Oilseed crop", "Drought tolerant", "Good yield potential"], cons: ["Sensitive to water logging", "Pests", "Seed shattering"] },
+      { id: "sorghum", symbol: "🌾", name: "Sorghum", how: "Grows in arid to semi-arid; well-drained soil; pest control.", pros: ["Drought tolerant", "Multi-use crop", "Soil improvement"], cons: ["Lower yields", "Pests", "Less market"] },
+      { id: "soybeanseed", symbol: "🌱", name: "Soybeanseed", how: "Plant in well-drained soils; crop rotation helps disease.", pros: ["Protein source", "Soil nitrogen fixer", "Oilseed"], cons: ["Sensitive to drought", "Fungus risk", "Price fluctuations"] },
+      { id: "squash", symbol: "🎃", name: "Squash", how: "Plant in warm weather; rich soil; needs space and water.", pros: ["Nutrient rich", "High yield", "Good market"], cons: ["Requires space", "Pest prone", "Water needs"] },
+      { id: "sunflowerseed", symbol: "🌻", name: "Sunflowerseed", how: "Requires full sun; well-drained soil; moderate water.", pros: ["Oil and snacks", "Pollinator friendly", "Easy to grow"], cons: ["Birds damage", "Disease prone", "Soil prep needed"] },
+      { id: "sweetcorn", symbol: "🌽", name: "Sweetcorn", how: "Fertile soil with sunlight; regular watering and fertilization.", pros: ["Popular vegetable", "Quick growth", "Good revenue"], cons: ["Pests", "Needs nutrients", "Moderate water"] },
+      { id: "tapioca", symbol: "🌱", name: "Tapioca", how: "Tropical; well-drained; moderate rainfall; soil moisture.", pros: ["Starch source", "Drought tolerant", "Multiple uses"], cons: ["Pests", "Slow maturing", "Labor intensive"] },
+      { id: "tea-leaf", symbol: "🍵", name: "Tea-leaf", how: "Acidic, well-drained soils; regular pruning and pest management.", pros: ["Popular beverage", "High export value", "Grows on hills"], cons: ["Labor intensive", "Frost sensitive", "Soil depletion"] },
+      { id: "tea-tree", symbol: "🌿", name: "Tea-tree", how: "Similar to tea-leaf; used for oil extraction.", pros: ["Medicinal oil", "Multi-purpose"], cons: ["Special care", "Limited market"] },
+      { id: "tomatillo", symbol: "🍅", name: "Tomatillo", how: "Warm climate; well-drained soil; moderate water.", pros: ["Used in sauces", "Fast growing"], cons: ["Susceptible to pests", "Requires support"] },
+      { id: "vanilla", symbol: "🌺", name: "Vanilla", how: "Tropical shade-growing orchid; needs hand pollination.", pros: ["High value spice", "Aromatic"], cons: ["Labor intensive", "Slow yield"] },
+    ];
+
+    const gridContainer = document.querySelector('.grid-container');
+    const infoPanel = document.getElementById('info-panel');
+    const infoTitle = document.getElementById('info-title');
+    const infoHow = document.getElementById('info-how');
+    const infoPros = document.getElementById('info-pros');
+    const infoCons = document.getElementById('info-cons');
+
+    // Helper: Clear list children
+    function clearList(ul) {
+      while(ul.firstChild) {
+        ul.removeChild(ul.firstChild);
+      }
+    }
+
+    // Populate crop boxes dynamically
+    crops.forEach(crop => {
+      const box = document.createElement('div');
+      box.className = 'crop-box';
+      box.setAttribute('tabindex', '0');
+      box.setAttribute('role', 'button');
+      box.setAttribute('aria-label', `Select farming type ${crop.name}`);
+      box.dataset.cropId = crop.id;
+
+      const symbolSpan = document.createElement('span');
+      symbolSpan.className = 'crop-symbol';
+      symbolSpan.textContent = crop.symbol;
+      box.appendChild(symbolSpan);
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = crop.name;
+      box.appendChild(nameSpan);
+
+      // Click or keyboard select event
+      box.addEventListener('click', () => showCropInfo(crop.id));
+      box.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showCropInfo(crop.id); } });
+
+      gridContainer.appendChild(box);
+    });
+
+    // Show info for a selected crop
+    function showCropInfo(id) {
+      const crop = crops.find(c => c.id === id);
+      if(!crop) return;
+
+      infoTitle.textContent = crop.name + " Farming";
+      infoHow.textContent = crop.how;
+
+      clearList(infoPros);
+      crop.pros.forEach(pro => {
+        const li = document.createElement('li');
+        li.textContent = pro;
+        infoPros.appendChild(li);
+      });
+
+      clearList(infoCons);
+      crop.cons.forEach(con => {
+        const li = document.createElement('li');
+        li.textContent = con;
+        infoCons.appendChild(li);
+      });
+
+      infoPanel.hidden = false;
+      infoPanel.focus();
+    }
+
+    const searchInput = document.getElementById('crop-search');
+    searchInput.addEventListener('input', function() {
+      const value = this.value.toLowerCase();
+      document.querySelectorAll('.crop-box').forEach(box => {
+        const name = box.querySelector('span:last-child').textContent.toLowerCase();
+        box.style.display = name.includes(value) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>
+</content>
+</create_file>
